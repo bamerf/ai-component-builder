@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import { useChat } from 'ai/svelte';
 
 	const { messages, handleSubmit, input } = useChat({
@@ -12,7 +13,13 @@
 	{/each}
 </ul>
 
-<form on:submit={handleSubmit} method="post">
+<form class="flex justify-center items-center" on:submit={handleSubmit} method="post">
 	<input bind:value={$input} type="text" />
 	<button type="submit">Generate</button>
 </form>
+
+<style lang="postcss">
+	:global(html) {
+		background-color: theme(colors.red.500);
+	}
+</style>
