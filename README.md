@@ -1,38 +1,50 @@
-# create-svelte
+# AI Component Builder
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
-## Creating a project
+## 👉 [Link to website](#)  
 
-If you're seeing this, you've probably already done this step. Congrats!
+---
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Table of Contents
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- [AI Component Builder](#ai-component-builder)
+  - [👉 Link to website  ](#-link-to-website-)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contribution](#contribution)
+  - [License](#license)
 
-## Developing
+## Introduction
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+This tool allows you to easily design and generate code for UI components. There's more components, features and controls coming soon.
 
-```bash
-npm run dev
+## Features
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- **Design**: Design components using intuitive controls.
+- **Frameworks**: Generate code in a variety of common UI framework and languages.
+- **Styling**: Use different styling methodologies.
 
-## Building
+## Installation
 
-To create a production version of your app:
+This app doesn't require any installation, it's a web-based app. Just visit the [website](#) to get started!
 
-```bash
-npm run build
-```
+## Usage
 
-You can preview the production build with `npm run preview`.
+1. Visit the [website](#).
+2. Customize styling.
+3. Choose your framework.
+4. Choose your styling methodology.
+5. Preview your component.
+6. Generate the code.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Contribution
+
+If you have suggestions for improving the app or adding new features, please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
