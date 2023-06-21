@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
-## 👉 [Link to website](#)  
+## 👉 [Link to website](https://component.bamerf.com/)  
 
 ---
 
@@ -30,11 +30,11 @@ This tool allows you to easily design and generate code for UI components. There
 
 ## Installation
 
-This app doesn't require any installation, it's a web-based app. Just visit the [website](#) to get started!
+This app doesn't require any installation, it's a web-based app. Just visit the [website](https://component.bamerf.com/) to get started!
 
 ## Usage
 
-1. Visit the [website](#).
+1. Visit the [website](https://component.bamerf.com/).
 2. Customize styling.
 3. Choose your framework.
 4. Choose your styling methodology.
