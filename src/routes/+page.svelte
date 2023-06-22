@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useChat } from 'ai/svelte';
-	import { writable } from 'svelte/store';
+	import { writable, derived } from 'svelte/store';
 	import clsx from 'clsx';
 	import Highlight, { LineNumbers } from 'svelte-highlight';
 	import typescript from 'svelte-highlight/languages/typescript';
@@ -19,18 +19,38 @@
 	let text = writable('Button');
 	let isBold = writable(false);
 
+	let combinedValues = derived(
+		[paddingX, paddingY, backgroundColor, textColor, borderRadius, text, isBold],
+		([$paddingX, $paddingY, $backgroundColor, $textColor, $borderRadius, $text, $isBold]) => {
+			return {
+				paddingX: $paddingX,
+				paddingY: $paddingY,
+				backgroundColor: $backgroundColor,
+				textColor: $textColor,
+				borderRadius: $borderRadius,
+				text: $text,
+				fontWeight: $isBold ? '600' : '400'
+			};
+		}
+	);
+
 	const { messages, handleSubmit, isLoading } = useChat({
 		api: '/server',
 		initialInput: `
-			write me a functional button in React with the details:
-			
-			- paddingX: ${$paddingX}
-			- paddingY: ${$paddingY}
-			- backgroundColor: ${$backgroundColor}
-			- textColor: ${$textColor}
+			write me a functional button in React.
 
-			write it using typescript
-			style it with tailwindcss
+			write it using typescript.
+			style it with tailwindcss.
+
+			it takes no props, and has the following styles:
+			
+		- paddingX: ${combinedValues.subscribe((val) => val.paddingX)}
+    - paddingY: ${combinedValues.subscribe((val) => val.paddingY)}
+    - backgroundColor: ${combinedValues.subscribe((val) => val.backgroundColor)}
+    - textColor: ${combinedValues.subscribe((val) => val.textColor)}
+    - borderRadius: ${combinedValues.subscribe((val) => val.borderRadius)}
+    - button text: ${combinedValues.subscribe((val) => val.text)}
+    - font-weight: ${combinedValues.subscribe((val) => val.fontWeight)}
 		`
 	});
 
