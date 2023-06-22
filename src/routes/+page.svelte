@@ -9,11 +9,15 @@
 
 	import Button from '../components/Button.svelte';
 	import Control from '../components/Control.svelte';
+	import Toggle from '../components/Toggle.svelte';
 
 	let paddingX = writable(14);
 	let paddingY = writable(8);
 	let backgroundColor = writable('#52525b');
 	let textColor = writable('#FFFFFF');
+	let borderRadius = writable(4);
+	let text = writable('Button');
+	let isBold = writable(false);
 
 	const { messages, handleSubmit, isLoading } = useChat({
 		api: '/server',
@@ -46,10 +50,23 @@
 			</div>
 		</Control>
 
-		<Control label="Padding Horizontal">
+		<Control label="Padding Vertical">
 			<div class="flex gap-2">
 				<input class="w-full" type="range" min={2} max={48} step={1} bind:value={$paddingY} />
 				<p class="text-white">{$paddingY}</p>
+			</div>
+		</Control>
+
+		<Control label="Border Radius">
+			<div class="flex gap-2">
+				<input class="w-full" type="range" min={0} max={50} step={1} bind:value={$borderRadius} />
+				<p class="text-white">{$borderRadius}</p>
+			</div>
+		</Control>
+
+		<Control label="Button Text">
+			<div class="flex gap-2">
+				<input class="w-full" type="text" bind:value={$text} placeholder="Button" />
 			</div>
 		</Control>
 
@@ -61,6 +78,10 @@
 			<input class="w-full bg-neutral-900" type="color" bind:value={$textColor} />
 		</Control>
 
+		<Control label="Bold">
+			<Toggle isChecked={$isBold} setIsChecked={() => ($isBold = !$isBold)} />
+		</Control>
+
 		<button class="w-full p-2 text-white rounded bg-neutral-600" on:click={handleSubmit}
 			>{$isLoading ? 'Loading...' : 'Generate'}</button
 		>
@@ -68,7 +89,7 @@
 
 	<div class="grid w-full gap-4">
 		<div class={clsx('min-h-[300px] w-full flex justify-center items-center', bgStyles)}>
-			<Button {paddingX} {paddingY} {backgroundColor} {textColor} />
+			<Button {paddingX} {paddingY} {backgroundColor} {textColor} {borderRadius} {text} {isBold} />
 		</div>
 		<div class={clsx('min-h-[1000px] w-full', bgStyles)}>
 			{#each $messages as message, index (message.id)}
