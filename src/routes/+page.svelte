@@ -13,6 +13,7 @@
 	import Button from '../components/Button.svelte';
 	import Control from '../components/Control.svelte';
 	import Toggle from '../components/Toggle.svelte';
+	import Select from '../components/Select.svelte';
 
 	let originalValues = {
 		paddingX: 14,
@@ -21,7 +22,8 @@
 		textColor: '#FFFFFF',
 		borderRadius: 4,
 		text: 'Button',
-		isBold: false
+		isBold: false,
+		selectedFramework: 'React'
 	};
 
 	let paddingX = writable(originalValues.paddingX);
@@ -32,9 +34,20 @@
 	let text = writable(originalValues.text);
 	let isBold = writable(originalValues.isBold);
 
+	let selectedFramework = writable(originalValues.selectedFramework);
+
 	let combinedValues = derived(
-		[paddingX, paddingY, backgroundColor, textColor, borderRadius, text, isBold],
-		([$paddingX, $paddingY, $backgroundColor, $textColor, $borderRadius, $text, $isBold]) => {
+		[paddingX, paddingY, backgroundColor, textColor, borderRadius, text, isBold, selectedFramework],
+		([
+			$paddingX,
+			$paddingY,
+			$backgroundColor,
+			$textColor,
+			$borderRadius,
+			$text,
+			$isBold,
+			$selectedFramework
+		]) => {
 			return {
 				paddingX: $paddingX,
 				paddingY: $paddingY,
@@ -42,15 +55,20 @@
 				textColor: $textColor,
 				borderRadius: $borderRadius,
 				text: $text,
-				fontWeight: $isBold ? '600' : '400'
+				fontWeight: $isBold ? '600' : '400',
+				selectedFramework: $selectedFramework
 			};
 		}
 	);
 
+	combinedValues.subscribe((val) => console.log(val));
+
+	selectedFramework.subscribe((val) => console.log(val));
+
 	const { messages, handleSubmit, isLoading } = useChat({
 		api: '/server',
 		initialInput: `
-			write me a functional button in React.
+			write me a functional button in ${combinedValues.subscribe((val) => val.selectedFramework)}.
 
 			write it using typescript.
 			style it with tailwindcss.
@@ -136,6 +154,10 @@
 
 		<Control label="Bold">
 			<Toggle isChecked={$isBold} setIsChecked={() => ($isBold = !$isBold)} />
+		</Control>
+
+		<Control label="Framework">
+			<Select options={['React', 'Vue', 'Svelte']} bind:value={$selectedFramework} />
 		</Control>
 
 		<button class="w-full p-2 text-white rounded bg-neutral-600" on:click={handleSubmit}
