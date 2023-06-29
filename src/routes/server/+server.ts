@@ -12,6 +12,7 @@ const openai = new OpenAIApi(config);
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { messages } = await request.json();
+	console.log('constPOST:RequestHandler= ~ messages:', messages);
 
 	try {
 		const response = await openai.createChatCompletion({

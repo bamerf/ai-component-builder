@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useChat } from 'ai/svelte';
 	import { writable, derived } from 'svelte/store';
+	import { afterUpdate } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import clsx from 'clsx';
 	import Highlight, { LineNumbers } from 'svelte-highlight';
@@ -14,6 +15,8 @@
 	import Control from '../components/Control.svelte';
 	import Toggle from '../components/Toggle.svelte';
 	import Select from '../components/Select.svelte';
+
+	const bgStyles = 'bg-neutral-900 border border-neutral-400 rounded-md';
 
 	let originalValues = {
 		paddingX: 14,
@@ -33,8 +36,8 @@
 	let borderRadius = writable(originalValues.borderRadius);
 	let text = writable(originalValues.text);
 	let isBold = writable(originalValues.isBold);
-
 	let selectedFramework = writable(originalValues.selectedFramework);
+	let initialInput = writable('');
 
 	let combinedValues = derived(
 		[paddingX, paddingY, backgroundColor, textColor, borderRadius, text, isBold, selectedFramework],
@@ -61,35 +64,36 @@
 		}
 	);
 
-	combinedValues.subscribe((val) => console.log(val));
-
-	selectedFramework.subscribe((val) => console.log(val));
-
-	const { messages, handleSubmit, isLoading } = useChat({
-		api: '/server',
-		initialInput: `
-			write me a functional button in ${combinedValues.subscribe((val) => val.selectedFramework)}.
+	combinedValues.subscribe((values) => {
+		initialInput.set(`
+			write me a functional button component in ${values.selectedFramework}.
 
 			write it using typescript.
 			style it with tailwindcss.
 
 			it takes no props, and has the following styles:
 			
-		- paddingX: ${combinedValues.subscribe((val) => val.paddingX)}
-    - paddingY: ${combinedValues.subscribe((val) => val.paddingY)}
-    - backgroundColor: ${combinedValues.subscribe((val) => val.backgroundColor)}
-    - textColor: ${combinedValues.subscribe((val) => val.textColor)}
-    - borderRadius: ${combinedValues.subscribe((val) => val.borderRadius)}
-    - button text: ${combinedValues.subscribe((val) => val.text)}
-    - font-weight: ${combinedValues.subscribe((val) => val.fontWeight)}
-		`
+			- paddingX: ${values.paddingX} in pixels
+			- paddingY: ${values.paddingY} in pixels
+			- backgroundColor: ${values.backgroundColor} in hex
+			- textColor: ${values.textColor} in hex
+			- borderRadius: ${values.borderRadius} in pixels
+			- button text: ${values.text}
+			- font-weight: ${values.fontWeight}
+		`);
 	});
 
-	const bgStyles = 'bg-neutral-900 border border-neutral-400 rounded-md';
+	const { messages, handleSubmit, isLoading, input } = useChat({
+		api: '/server'
+	});
+
+	afterUpdate(() => {
+		input.set($initialInput);
+	});
 
 	function resetInput<T>(target: Writable<T>, key: keyof typeof originalValues) {
 		if (key in originalValues) {
-			target.update((value) => originalValues[key] as T);
+			target.update(() => originalValues[key] as T);
 		}
 	}
 </script>
