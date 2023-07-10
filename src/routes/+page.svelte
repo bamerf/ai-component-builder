@@ -26,7 +26,9 @@
 		borderRadius: 4,
 		text: 'Button',
 		isBold: false,
-		selectedFramework: 'React'
+		selectedFramework: 'React',
+		selectedLanguage: 'tsx',
+		selectedStyling: 'tailwindcss'
 	};
 
 	let paddingX = writable(originalValues.paddingX);
@@ -38,9 +40,22 @@
 	let isBold = writable(originalValues.isBold);
 	let selectedFramework = writable(originalValues.selectedFramework);
 	let initialInput = writable('');
+	let selectedLanguage = writable(originalValues.selectedLanguage);
+	let selectedStyling = writable(originalValues.selectedStyling);
 
 	let combinedValues = derived(
-		[paddingX, paddingY, backgroundColor, textColor, borderRadius, text, isBold, selectedFramework],
+		[
+			paddingX,
+			paddingY,
+			backgroundColor,
+			textColor,
+			borderRadius,
+			text,
+			isBold,
+			selectedFramework,
+			selectedLanguage,
+			selectedStyling
+		],
 		([
 			$paddingX,
 			$paddingY,
@@ -49,7 +64,9 @@
 			$borderRadius,
 			$text,
 			$isBold,
-			$selectedFramework
+			$selectedFramework,
+			$selectedLanguage,
+			$selectedStyling
 		]) => {
 			return {
 				paddingX: $paddingX,
@@ -59,27 +76,29 @@
 				borderRadius: $borderRadius,
 				text: $text,
 				fontWeight: $isBold ? '600' : '400',
-				selectedFramework: $selectedFramework
+				selectedFramework: $selectedFramework,
+				selectedLanguage: $selectedLanguage,
+				selectedStyling: $selectedStyling
 			};
 		}
 	);
 
 	combinedValues.subscribe((values) => {
-		initialInput.set(`
-			write me a functional button component in ${values.selectedFramework}.
-
-			write it using typescript.
-			style it with tailwindcss.
-
-			it takes no props, and has the following styles:
+		initialInput.set(`write me a functional button component in ${values.selectedFramework}. 
 			
-			- paddingX: ${values.paddingX} in pixels
-			- paddingY: ${values.paddingY} in pixels
-			- backgroundColor: ${values.backgroundColor} in hex
-			- textColor: ${values.textColor} in hex
-			- borderRadius: ${values.borderRadius} in pixels
-			- button text: ${values.text}
-			- font-weight: ${values.fontWeight}
+			these are the requirements:
+			
+			write it using ${values.selectedLanguage}.
+			style it with ${values.selectedStyling}.
+			it takes no props, and has the following styles:
+			paddingX: ${values.paddingX} in pixels
+			paddingY: ${values.paddingY} in pixels
+			backgroundColor: ${values.backgroundColor} in hex
+			textColor: ${values.textColor} in hex
+			borderRadius: ${values.borderRadius} in pixels
+			button text: ${values.text}
+			font-weight: ${values.fontWeight}
+			generate only the code. do not generate other texts or explanations and avoid using markdown language tagging or back ticks
 		`);
 	});
 
@@ -156,12 +175,23 @@
 			</div>
 		</Control>
 
-		<Control label="Bold">
-			<Toggle isChecked={$isBold} setIsChecked={() => ($isBold = !$isBold)} />
-		</Control>
-
 		<Control label="Framework">
 			<Select options={['React', 'Vue', 'Svelte']} bind:value={$selectedFramework} />
+		</Control>
+
+		<Control label="Language">
+			<Select options={['tsx', 'jsx']} bind:value={$selectedLanguage} />
+		</Control>
+
+		<Control label="Styling">
+			<Select
+				options={['tailwindcss', 'inline-css', 'styles-components']}
+				bind:value={$selectedStyling}
+			/>
+		</Control>
+
+		<Control label="Bold">
+			<Toggle isChecked={$isBold} setIsChecked={() => ($isBold = !$isBold)} />
 		</Control>
 
 		<button class="w-full p-2 text-white rounded bg-neutral-600" on:click={handleSubmit}
@@ -177,7 +207,7 @@
 			{#each $messages as message, index (message.id)}
 				{#if index !== 0}
 					<div class="p-4">
-						<Highlight language={typescript} code={message.content} let:highlighted>
+						<Highlight language={typescript} langtag={false} code={message.content} let:highlighted>
 							<LineNumbers {highlighted} wrapLines hideBorder --padding-left={0} />
 						</Highlight>
 					</div>
