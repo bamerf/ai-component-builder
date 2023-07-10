@@ -121,8 +121,8 @@
 	{@html github}
 </svelte:head>
 
-<main class="flex gap-4 p-4">
-	<div class={clsx('min-h-[1000px] min-w-[300px] p-4 flex flex-col gap-6', bgStyles)}>
+<main class="flex h-screen gap-4 p-4">
+	<div class={clsx('overflow-auto min-w-[300px] p-4 flex flex-col gap-6', bgStyles)}>
 		<Control label="Padding Horizontal">
 			<div class="flex items-center gap-2">
 				<ResetIcon handleReset={() => resetInput(paddingX, 'paddingX')} />
@@ -199,11 +199,11 @@
 		>
 	</div>
 
-	<div class="grid w-full gap-4">
-		<div class={clsx('min-h-[300px] w-full flex justify-center items-center', bgStyles)}>
+	<div class="flex flex-col w-full gap-4">
+		<div class={clsx('h-72 w-full flex justify-center items-center', bgStyles)}>
 			<Button {paddingX} {paddingY} {backgroundColor} {textColor} {borderRadius} {text} {isBold} />
 		</div>
-		<div class={clsx('min-h-[1000px] w-full', bgStyles)}>
+		<div class={clsx('h-full w-full overflow-auto', bgStyles)}>
 			{#each $messages as message, index (message.id)}
 				{#if index !== 0}
 					<div class="p-4">
